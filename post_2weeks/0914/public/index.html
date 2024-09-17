@@ -19,28 +19,31 @@
             const responseElement = document.getElementById('response');
             
             responseElement.textContent = `${item} 주문 클릭`;
-
+            console.log(`${item} 주문 클릭`);  // Log to console
+    
             // 서버 A로 POST 요청 보내기
             axios.post('http://localhost:3000/serverA', { item: item })
             .then(function (response) {
                 // 서버로부터 응답을 받은 후 2초 간격으로 순차적으로 출력
                 const steps = response.data.steps;
                 let stepIndex = 0;
-
+    
                 function showStep() {
                     if (stepIndex < steps.length) {
                         responseElement.textContent = steps[stepIndex];
+                        console.log(steps[stepIndex]);  // Log each step to console
                         stepIndex++;
                         setTimeout(showStep, 2000);  // 2초 간격으로 출력
                     }
                 }
-
+    
                 showStep();  // 첫 번째 단계 출력 시작
             })
             .catch(function (error) {
                 responseElement.textContent = 'Error: ' + error.message;
+                console.log('Error: ' + error.message);  // Log the error
             });
         });
-    </script>
+    </script>    
 </body>
 </html>

@@ -8,7 +8,6 @@ router.post('/', async (req, res) => {
 
     // 서버 A에서 주문 완료 처리
     const steps = [
-        `${item} 주문이 완료되었습니다.`,
         `${item} 배송 준비 중...`,
         `${item}을/를 배송을 시작했습니다.`,
         `${item} 배송 중...`
