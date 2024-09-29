@@ -2,20 +2,39 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const serverARouter = require('./routes/serverA'); // 서버 A 라우터
-const serverBRouter = require('./routes/serverB'); // 서버 B 라우터
+const serverARouter = require('./routes/serverA'); 
+const serverBRouter = require('./routes/serverB'); 
 
 const app = express();
 
-// JSON 데이터 파싱을 위한 body-parser 설정
-app.use(bodyParser.json());  // JSON 형식의 데이터를 파싱
-app.use(bodyParser.urlencoded({ extended: true }));
+// 미들웨어 에러 처리
+try {
+    // JSON 데이터 파싱을 위한 body-parser 설정
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+} catch (error) {
+    console.error('Body parser 미들웨어 설정 오류:', error);
+}
 
-// 정적 파일 제공 (프론트엔드 HTML 파일)
-app.use(express.static(path.join(__dirname, 'public')));
+// 정적 파일 제공
+try {
+    app.use(express.static(path.join(__dirname, 'public')));
+} catch (error) {
+    console.error('정적 파일 제공 오류:', error);
+}
 
 // 라우터 설정
-app.use('/serverA', serverARouter); // 서버 A 요청 처리
-app.use('/serverB', serverBRouter); // 서버 B 요청 처리
+try {
+    app.use('/serverA', serverARouter);
+    app.use('/serverB', serverBRouter);
+} catch (error) {
+    console.error('라우터 설정 오류:', error);
+}
+
+// 에러 핸들러
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('서버 내부 오류');
+});
 
 module.exports = app;
