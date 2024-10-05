@@ -38,17 +38,17 @@ function onError(error) {
 
     const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
-    // 특정 에러에 따른 처리
     switch (error.code) {
         case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
+            console.error(`${bind}는 높은 권한이 필요합니다. 오류 세부 사항: ${error.message}`);
             process.exit(1);
             break;
         case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
+            console.error(`${bind}는 이미 사용 중입니다. 오류 세부 사항: ${error.message}`);
             process.exit(1);
             break;
         default:
+            console.error(`예상치 못한 오류가 발생했습니다: ${error.message}`);
             throw error;
     }
 }

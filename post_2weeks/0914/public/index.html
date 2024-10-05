@@ -7,23 +7,29 @@
 </head>
 <body>
     <h1>데이터 전송</h1>
-    <input type="text" id="itemInput" placeholder="데이터 입력">
-    <button id="sendButton">서버로 데이터 전송</button>
+    <input type="text" id="itemInput" placeholder="데이터 입력" oninput="toggleButton()">
+    <button id="sendButton" disabled>서버로 데이터 전송</button>
     <pre id="response"></pre>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        function toggleButton() {
+            const item = document.getElementById('itemInput').value;
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = !item.trim();
+        }
+
         document.getElementById('sendButton').addEventListener('click', function() {
             const item = document.getElementById('itemInput').value;
             const responseElement = document.getElementById('response');
-    
-            if (!item) {
+
+            if (!item.trim()) {
                 responseElement.textContent = '데이터를 입력하세요.';
                 return;
             }
 
             // 서버 A로 POST 요청 보내기
-            axios.post('http://localhost:3000/serverA', { item: item })
+            axios.post('http://localhost:3000/serverA', { item: item.trim() })
             .then(function (response) {
                 responseElement.textContent = response.data.message;
             })
