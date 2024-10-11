@@ -13,23 +13,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        // 버튼 활성화/비활성화
         function toggleButton() {
             const item = document.getElementById('itemInput').value;
             const sendButton = document.getElementById('sendButton');
             sendButton.disabled = !item.trim();
         }
 
+        // 서버로 데이터 전송
         document.getElementById('sendButton').addEventListener('click', function() {
-            const item = document.getElementById('itemInput').value;
+            let item = document.getElementById('itemInput').value;
             const responseElement = document.getElementById('response');
 
+            // 데이터가 없는 경우 처리
             if (!item.trim()) {
                 responseElement.textContent = '데이터를 입력하세요.';
                 return;
             }
 
+            // 데이터를 명시적으로 문자열로 변환
+            item = String(item.trim());
+
             // 서버 A로 POST 요청 보내기
-            axios.post('http://localhost:3000/serverA', { item: item.trim() })
+            axios.post('http://localhost:3000/serverA', { item: item })
             .then(function (response) {
                 responseElement.textContent = response.data.message;
             })
